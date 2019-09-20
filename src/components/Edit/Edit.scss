@@ -1,0 +1,7 @@
+@import '../../styles/mixins';
+
+.edit-btn {
+  &:before {
+    @include icon('~./images/edit.svg', 20px);
+  }
+}

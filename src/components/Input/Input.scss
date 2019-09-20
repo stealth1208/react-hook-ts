@@ -1,0 +1,14 @@
+@import '../../styles/variables';
+
+.text-input {
+  input {
+    border: none;
+    border-bottom: 1px solid $BLACK;
+    outline: none;
+    font-size: 2rem;
+  }
+
+  input:disabled {
+    border-bottom: 1px dashed $DISABLED;
+  }
+}
