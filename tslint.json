@@ -21,7 +21,6 @@
     "object-literal-sort-keys": false,
     "typedef": [
       true,
-      "call-signature",
       "parameter",
       "arrow-parameter",
       "property-declaration",

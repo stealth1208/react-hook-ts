@@ -7,6 +7,11 @@
     visibility: visible;
   }
 
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
   &:before {
     @include icon('~./images/save.svg', 20px);
   }

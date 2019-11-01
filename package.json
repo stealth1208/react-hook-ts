@@ -42,10 +42,10 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^5.5.0",
     "@types/react-router-dom": "^4.3.5",
-    "cra-alias": "^4.13.19",
     "craco-alias": "^1.0.4",
-    "react-router-dom": "^5.0.1"
+    "normalize.css": "^8.0.1",
+    "react-router-dom": "^5.0.1",
+    "types": "^0.1.1"
   }
 }

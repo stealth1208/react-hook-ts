@@ -5,7 +5,10 @@
       "@Components": ["components"],
       "@Pages": ["pages"],
       "@Contexts": ["contexts"],
-      "@Hooks": ["hooks"]
+      "@Hooks": ["hooks"],
+      "@Interfaces": ["interfaces/interfaces"],
+      "@Tools": ["helpers/tools"],
+      "@Constants": ["helpers/constants"]
     }
   }
 }

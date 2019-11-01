@@ -1,7 +1,14 @@
-import { Edit, Input, Save } from '@Components';
+import { Count, Edit, Input, Save } from '@Components';
+import { COLORS } from '@Constants';
 import { NotesContext } from '@Contexts';
+import { useNotes } from '@Hooks';
+import { INote } from '@Interfaces';
 import { Switch } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
+import { Theme, withStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/styles';
+import { strToHexColor } from '@Tools';
+import React, { useEffect } from 'react';
+
 import './Notes.scss';
 
 export interface INote {
@@ -13,96 +20,69 @@ export interface INote {
 export interface IProps {}
 
 const Notes: React.FunctionComponent<IProps> = (props: IProps) => {
-  const [notes, setNotes] = useState([
+  const [notes, updateNotes] = useNotes([
     {
       value: '',
-      isEditing: true,
       status: false,
+      isEditing: true,
     },
   ]);
 
+  const useStyles = makeStyles((theme: any) =>
+    createStyles({
+      editing: {
+        backgroundColor: COLORS.RED.EDITING,
+      },
+      done: {
+        backgroundColor: COLORS.RED.DONE,
+      },
+    }),
+  );
+
+  const classes = useStyles();
+
+  const PurpleSwitch = withStyles({
+    switchBase: {
+      'color': '#dd2c00',
+      '&$checked': {
+        color: '#dd2c00',
+      },
+      '&$checked + $track': {
+        backgroundColor: '#dd2c00',
+      },
+    },
+    checked: {},
+    track: {},
+  })(Switch);
+
   const changeValue = (value: string, index: number) => {
-    setNotes((notes: INote[]) => {
-      return notes.map((note: INote, idx: number) => {
-        if (idx === index) {
-          note = {
-            ...note,
-            value,
-          };
-        }
-        return note;
-      });
-    });
+    updateNotes({ value, index, type: 'changeValue' });
   };
 
   const onEdit = (index: number) => {
-    setNotes((notes: INote[]) => {
-      return notes.map((note: INote, idx: number) => {
-        if (idx === index) {
-          note = {
-            ...note,
-            isEditing: true,
-          };
-        } else {
-          note = {
-            ...note,
-            isEditing: false,
-          };
-        }
-        return note;
-      });
-    });
+    updateNotes({ index, type: 'edit' });
   };
 
   const onSave = (index: number) => {
-    if (!notes[notes.length - 1].value) {
-      onEdit(notes.length - 1);
-      return;
-    }
-    setNotes((notes: INote[]): INote[] => {
-      const temp = notes.map((note: INote) => {
-        note = {
-          ...note,
-          isEditing: false,
-        };
-        return note;
-      });
-
-      return [
-        ...temp,
-        {
-          value: '',
-          isEditing: true,
-          status: false,
-        },
-      ];
-    });
+    updateNotes({ index, type: 'save' });
   };
 
   const onChangeStatus = (index: number) => {
-    if (!notes[index].isEditing) {
-      return;
-    }
-    setNotes((notes: INote[]) => {
-      return notes.map((note: INote, idx: number) => {
-        if (idx === index) {
-          note = {
-            ...note,
-            status: !note.status,
-          };
-        }
-        return note;
-      });
-    });
+    updateNotes({ index, type: 'toggleStatus' });
   };
 
-  console.log('notes', notes);
   return (
     <NotesContext.Provider value={notes}>
-      <div className="notes">
-        {!!notes.length &&
+      <div className={'notes'}>
+        {notes &&
+          !!notes.length &&
           notes.map((note: INote, index: number) => (
-            <div key={index} className="notes__item">
+            <div
+              key={index}
+              className={`notes__item ${
+                note.isEditing ? classes.editing : classes.done
+              }`}
+            >
               <Input
                 className="notes__item__input"
                 isEditing={note.isEditing}
@@ -110,7 +90,7 @@ const Notes: React.FunctionComponent<IProps> = (props: IProps) => {
                 onChange={(value: string): void => changeValue(value, index)}
               />
               <div className="notes__item__controls">
-                <Switch
+                <PurpleSwitch
                   checked={note.status}
                   onChange={(): void => onChangeStatus(index)}
                 />
@@ -122,6 +102,7 @@ const Notes: React.FunctionComponent<IProps> = (props: IProps) => {
                 <Save
                   className="notes__item__save"
                   isEditing={note.isEditing}
+                  isDisabled={!note.value}
                   onClick={(): void => onSave(index)}
                 />
               </div>

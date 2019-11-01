@@ -1,10 +1,21 @@
+@import './variables';
+
 html {
   box-sizing: border-box;
   font-family: Roboto;
   font-size: 62.5%;
 
   #root {
-    padding-right: 1rem;
-    padding-left: 1rem;
+    &.container {
+      background-color: $WHITE;
+      // padding-right: 1rem;
+      // padding-left: 1rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  }
+
+  input {
+    font-family: inherit;
   }
 }

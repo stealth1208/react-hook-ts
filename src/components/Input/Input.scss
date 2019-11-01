@@ -4,8 +4,10 @@
   input {
     border: none;
     border-bottom: 1px solid $BLACK;
+    background-color: $PENSIVE;
     outline: none;
-    font-size: 2rem;
+    font-size: 1.8rem;
+    padding: 10px 0 0;
   }
 
   input:disabled {
